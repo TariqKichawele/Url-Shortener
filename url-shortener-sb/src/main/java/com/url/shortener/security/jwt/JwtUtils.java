@@ -42,7 +42,7 @@ public class JwtUtils {
                 .compact();
     }
 
-    public String generateUsernameFromJwtToken(String token) {
+    public String getUsernameFromJwtToken(String token) {
         return Jwts.parser()
                 .verifyWith((SecretKey) key())
                 .build().parseSignedClaims(token)
