@@ -9,7 +9,7 @@ const TextField = ({
     className,
     min,
     placeholder,
-  }) => {
+}) => {
     return (
         <div className="flex flex-col gap-1">
             <label
