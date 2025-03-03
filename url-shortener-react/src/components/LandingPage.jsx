@@ -6,7 +6,7 @@ import { useStoreContext } from '../contextApi/contextApi'
 
 const LandingPage = () => {
     const { token } = useStoreContext();
-    console.log("Token from landing page" + token);
+    console.log("Token from landing page " + token);
     
     const dashBoardNavigateHandler = () => {
         console.log('dashBoardNavigateHandler')
