@@ -2,19 +2,21 @@ import React, { useState } from 'react'
 import { useStoreContext } from '../../contextApi/contextApi'
 import { useNavigate } from 'react-router-dom';
 import { FaLink } from 'react-icons/fa';
-import { dummyData } from '../../dummyData/data'
 import Graph from './Graph';
 import Loader from '../Loader';
+import { useFetchMyShortUrls, useFetchTotalClicks } from '../../hooks/useQuery';
+import ShortenUrlList from './ShortenUrlList';
+import ShortenPopUp from './ShortenPopUp';
 
 const DashboardLayout = () => {
     const { token } = useStoreContext();
     const navigate = useNavigate();
-    const [shortenPopUp, setShortenPopUp] = useState(false);
+    const [ shortenPopUp, setShortenPopUp ] = useState(false);
 
-    const totalClicks = [];
-    const myShortenUrls = [];
-    const isLoading = false;
-    const loader = false;
+    const { isLoading, data: myShortenUrls } = useFetchMyShortUrls(token, onError);
+    const { isLoading: loader, data: totalClicks } = useFetchTotalClicks(token, onError);
+    console.log(totalClicks);
+   
 
     function onError() {
         navigate("/error");
@@ -26,7 +28,7 @@ const DashboardLayout = () => {
         ): ( 
         <div className="lg:w-[90%] w-full mx-auto py-16">
             <div className="h-96 relative">
-                {/* {totalClicks.length === 0 && (
+                {totalClicks.length === 0 && (
                     <div className="absolute flex flex-col  justify-center sm:items-center items-end  w-full left-0 top-0 bottom-0 right-0 m-auto">
                         <h1 className=" text-slate-800 font-serif sm:text-2xl text-[18px] font-bold mb-1">
                             No Data For This Time Period
@@ -36,8 +38,8 @@ const DashboardLayout = () => {
                             coming from
                         </h3>
                    </div>
-                )} */}
-                <Graph graphData={dummyData} />
+                )}
+                <Graph graphData={totalClicks} />
             </div>
             <div className='py-5 sm:text-end text-center'>
                 <button
@@ -59,20 +61,16 @@ const DashboardLayout = () => {
                         </div>
                     </div>
                 ) : (
-                    // <ShortenUrlList data={myShortenUrls} /> 
-                    <div>
-                        ShortenUrlList
-                    </div>
+                    <ShortenUrlList data={myShortenUrls} /> 
                 )}
             </div>
         </div>
         )}
 
-        {/* <ShortenPopUp
-          refetch={refetch}
+        <ShortenPopUp
           open={shortenPopUp}
           setOpen={setShortenPopUp}
-        /> */}
+        />
     </div>
   )
 }
